@@ -2,10 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>My Automation Site</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Automation Site</title>
 </head>
 <body>
-  <h1>Welcome to My Automation Site 🚀</h1>
-  <p>This site is under construction!</p>
+
+  <h1>🚀 Automation Tool</h1>
+
+  <input type="text" id="taskInput" placeholder="Enter your task" />
+  <button onclick="runAutomation()">Run</button>
+
+  <h3>Result:</h3>
+  <p id="output"></p>
+
+  <script>
+    function runAutomation() {
+      const input = document.getElementById("taskInput").value;
+      let result = "";
+
+      if (input.toLowerCase().includes("learn")) {
+        result = "Step 1: Start → Step 2: Practice → Step 3: Build";
+      } else if (input.toLowerCase().includes("fitness")) {
+        result = "Step 1: Warm up → Step 2: Exercise → Step 3: Diet";
+      } else {
+        result = "Try: learn coding / fitness plan";
+      }
+
+      document.getElementById("output").innerText = result;
+    }
+  </script>
+
 </body>
 </html>
