@@ -25,6 +25,21 @@ nav a {
   text-decoration: none;
 }
 
+.cards {
+  display: flex;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.card {
+  flex: 1;
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
 h1, h3 {
   text-align: center;
 }

@@ -28,7 +28,13 @@ function runAutomation() {
   tasks.push(input);
   localStorage.setItem("tasks", JSON.stringify(tasks));
 
+  document.getElementById("lastResult").innerText = result;
+
+  const count = tasks.length;
+  document.getElementById("taskCount").innerText = count;  
+
   loadHistory();
 }
 
 loadHistory();
+document.getElementById("taskCount").innerText = tasks.length;
