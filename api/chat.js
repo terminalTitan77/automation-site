@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     const { prompt } = req.body;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: {
@@ -23,6 +23,7 @@ export default async function handler(req, res) {
     );
 
     const data = await response.json();
+    console.log(JSON.stringify(data, null, 2));
 
     const text =
       data.candidates?.[0]?.content?.parts?.[0]?.text ||
