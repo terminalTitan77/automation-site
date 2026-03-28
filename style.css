@@ -86,3 +86,7 @@ ul {
     flex-direction: column;
   }
 }
+#errorMessage {
+  margin: 8px 0;
+  font-size: 14px;
+}

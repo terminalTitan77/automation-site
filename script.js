@@ -11,18 +11,14 @@ function loadHistory() {
 }
 
 function runAutomation() {
-  const input = document.getElementById("taskInput").value;
-  let result = "";
+const input = document.getElementById("taskInput").value.trim();
 
-  if (input.toLowerCase().includes("learn")) {
-    result = "Step 1: Start → Step 2: Practice → Step 3: Build";
-  } else if (input.toLowerCase().includes("fitness")) {
-    result = "Step 1: Warm up → Step 2: Exercise → Step 3: Diet";
-  } else {
-    result = "Try: learn coding / fitness plan";
-  }
+if (input === "") {
+  document.getElementById("errorMessage").innerText = "Please enter a task";
+  return;
+}
 
-  document.getElementById("output").innerText = result;
+document.getElementById("errorMessage").innerText = "";
 
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   tasks.push(input);
@@ -52,3 +48,4 @@ function deleteTask(index) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
   loadHistory();
 }
+document.getElementById("taskInput").value = "";
