@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     const { prompt } = req.body;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: {
@@ -13,9 +13,8 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           contents: [
             {
-              parts: [
-                { text: prompt }
-              ]
+              role: "user",
+              parts: [{ text: prompt }]
             }
           ]
         })
@@ -23,15 +22,17 @@ export default async function handler(req, res) {
     );
 
     const data = await response.json();
-    console.log(JSON.stringify(data, null, 2));
 
-    const text =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "No response";
+    console.log("FULL RESPONSE:", JSON.stringify(data, null, 2));
 
-    res.status(200).json({ reply: text });
+    const reply =
+      data?.candidates?.[0]?.content?.parts
+        ?.map(part => part.text)
+        .join("\n") || "No response";
+
+    res.status(200).json({ reply });
 
   } catch (error) {
-    res.status(500).json({ reply: "Something went wrong" });
+    res.status(500).json({ reply: "Server error" });
   }
 }
