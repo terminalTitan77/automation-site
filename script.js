@@ -13,35 +13,35 @@ function loadHistory() {
   document.getElementById("taskCount").innerText = tasks.length;
 }
 
-function runAutomation() {
+async function runAutomation() {
   const input = document.getElementById("taskInput").value.trim();
 
   if (input === "") {
-    document.getElementById("errorMessage").innerText = "Please enter a task";
+    document.getElementById("errorMessage").innerText = "Please enter a message";
     return;
   }
 
   document.getElementById("errorMessage").innerText = "";
+  document.getElementById("output").innerText = "Thinking...";
 
-  let result = "";
+  const response = await fetch("/api/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ prompt: input })
+  });
 
-  if (input.toLowerCase().includes("learn")) {
-    result = "Step 1: Start → Step 2: Practice → Step 3: Build";
-  } else if (input.toLowerCase().includes("fitness")) {
-    result = "Step 1: Warm up → Step 2: Exercise → Step 3: Diet";
-  } else {
-    result = "Try: learn coding / fitness plan";
-  }
+  const data = await response.json();
 
-  document.getElementById("output").innerText = result;
-  document.getElementById("lastResult").innerText = result;
+  document.getElementById("output").innerText = data.reply;
+  document.getElementById("lastResult").innerText = data.reply;
 
   let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   tasks.push(input);
   localStorage.setItem("tasks", JSON.stringify(tasks));
 
   loadHistory();
-
   document.getElementById("taskInput").value = "";
 }
 
