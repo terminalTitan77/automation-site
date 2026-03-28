@@ -3,9 +3,9 @@ function loadHistory() {
   const historyList = document.getElementById("historyList");
   historyList.innerHTML = "";
 
-  tasks.forEach(task => {
+  tasks.forEach((task, index) => {
     const li = document.createElement("li");
-    li.innerText = task;
+    li.innerHTML = `${task} <button onclick="deleteTask(${index})">Delete</button>`;
     historyList.appendChild(li);
   });
 }
@@ -38,3 +38,17 @@ function runAutomation() {
 
 loadHistory();
 document.getElementById("taskCount").innerText = tasks.length;
+
+function clearTasks() {
+  localStorage.removeItem("tasks");
+  document.getElementById("historyList").innerHTML = "";
+  document.getElementById("taskCount").innerText = 0;
+  document.getElementById("output").innerText = "";
+  document.getElementById("lastResult").innerText = "No result yet";
+}
+function deleteTask(index) {
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  tasks.splice(index, 1);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  loadHistory();
+}
