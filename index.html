@@ -3,19 +3,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Automation Site</title>
+  <title>Automation Dashboard</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      width: 420px;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    h1, h3 {
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #output {
+      background: #f8f8f8;
+      padding: 12px;
+      border-radius: 8px;
+      min-height: 40px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+  </style>
 </head>
 <body>
 
-  <h1>🚀 Automation Tool</h1>
+  <div class="container">
+    <h1>🚀 Automation Tool</h1>
 
-  <input type="text" id="taskInput" placeholder="Enter your task" />
-  <button onclick="runAutomation()">Run</button>
+    <input type="text" id="taskInput" placeholder="Enter your task" />
+    <button onclick="runAutomation()">Run</button>
 
-  <h3>Result:</h3>
-  <p id="output"></p>
+    <h3>Result</h3>
+    <p id="output"></p>
+
+    <h3>Task History</h3>
+    <ul id="historyList"></ul>
+  </div>
 
   <script>
+    function loadHistory() {
+      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      const historyList = document.getElementById("historyList");
+      historyList.innerHTML = "";
+
+      tasks.forEach(task => {
+        const li = document.createElement("li");
+        li.innerText = task;
+        historyList.appendChild(li);
+      });
+    }
+
     function runAutomation() {
       const input = document.getElementById("taskInput").value;
       let result = "";
@@ -29,7 +101,15 @@
       }
 
       document.getElementById("output").innerText = result;
+
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      tasks.push(input);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+
+      loadHistory();
     }
+
+    loadHistory();
   </script>
 
 </body>
