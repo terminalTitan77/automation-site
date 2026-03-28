@@ -3,25 +3,15 @@ export default async function handler(req, res) {
     const apiKey = process.env.GEMINI_API_KEY;
     const { prompt } = req.body;
 
-    // 1. Added the missing comma after the URL
-    // 2. Switched to v1beta to ensure all Gemini 2.5 features work
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contents: [
-            {
-              role: "user",
-              parts: [{ text: prompt }]
-            }
-          ],
-          // 3. Added thinkingBudget to prevent "hanging" or slow responses
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
           generationConfig: {
-            thinkingBudget: 0 
+            thinkingBudget: 0 // Ensures instant response
           }
         })
       }
@@ -29,18 +19,17 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    // Log the full data to your Vercel logs for debugging
-    console.log("GEMINI RESPONSE:", JSON.stringify(data, null, 2));
+    // This helps you see the REAL error in your browser/app
+    if (data.error) {
+      return res.status(data.error.code || 500).json({ 
+        reply: `Google API Error: ${data.error.message}` 
+      });
+    }
 
-    const reply =
-      data?.candidates?.[0]?.content?.parts
-        ?.map(part => part.text)
-        .join("\n") || "No response from AI";
-
+    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "No text returned";
     res.status(200).json({ reply });
 
   } catch (error) {
-    console.error("API Error:", error);
-    res.status(500).json({ reply: "Server error - check Vercel logs" });
+    res.status(500).json({ reply: "Server Connection Error" });
   }
 }
