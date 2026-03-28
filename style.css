@@ -60,6 +60,11 @@ button {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.02);
 }
 
 #output {
@@ -70,4 +75,14 @@ button {
 
 ul {
   padding-left: 20px;
+}
+@media (max-width: 600px) {
+  .container {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .cards {
+    flex-direction: column;
+  }
 }
