@@ -9,10 +9,17 @@ export default async function handler(req, res) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contents: [{ role: "user", parts: [{ text: prompt }] }],
+          contents: [{ 
+            role: "user", 
+            parts: [{ text: prompt }] 
+          }],
           generationConfig: {
-            // This is key: it stops the AI from 'overthinking' and just answers
-            thinkingBudget: 0 
+            // "thinkingBudget" MUST be inside "thinkingConfig"
+            thinkingConfig: {
+              thinkingBudget: 0 
+            },
+            temperature: 1.0,
+            maxOutputTokens: 1000
           }
         })
       }
@@ -20,23 +27,20 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    // 1. Check for API-level errors (Quota, Key issues, etc.)
+    // Log this so you can see the error in Vercel if it fails again
     if (data.error) {
-      console.error("GOOGLE ERROR:", data.error.message);
+      console.error("API Error:", data.error.message);
       return res.status(400).json({ reply: `Error: ${data.error.message}` });
     }
 
-    // 2. Advanced extraction (Gemini 2.5 can have multiple 'parts')
+    // Extracting the text (skipping any 'thought' parts)
     const parts = data?.candidates?.[0]?.content?.parts || [];
-    
-    // We look for the part that actually contains 'text'
     const textPart = parts.find(p => p.text);
-    const reply = textPart ? textPart.text : "AI returned an empty response.";
+    const reply = textPart ? textPart.text : "No response text found.";
 
     res.status(200).json({ reply });
 
   } catch (error) {
-    console.error("VERCEL ERROR:", error);
-    res.status(500).json({ reply: "Connection failed. Check Vercel logs." });
+    res.status(500).json({ reply: "Connection Error" });
   }
 }
