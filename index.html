@@ -3,42 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Automation Dashboard</title>
+  <title>Nexus | AI Automation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="container">
-    <nav>
-      <a href="index.html">Home</a> |
-      <a href="about.html">About</a> |
-      <a href="contact.html">Contact</a>
-    </nav>
-    <div class="cards">
-  <div class="card">
-    <h3>Tasks Saved</h3>
-    <p id="taskCount">0</p>
-  </div>
+  <div class="app-wrapper">
+    <aside class="sidebar">
+      <div class="logo">
+        <i data-lucide="zap" class="logo-icon"></i>
+        <span>NEXUS</span>
+      </div>
+      <nav>
+        <a href="index.html" class="active"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+        <a href="about.html"><i data-lucide="info"></i> About</a>
+        <a href="contact.html"><i data-lucide="mail"></i> Contact</a>
+      </nav>
+    </aside>
 
-  <div class="card">
-    <h3>Last Result</h3>
-    <p id="lastResult">No result yet</p>
-  </div>
-</div>
-    <h1>🚀 Automation Tool</h1>
+    <main class="main-content">
+      <header>
+        <h1>Automation Dashboard</h1>
+        <div class="user-badge">Status: <span class="status-online">Online</span></div>
+      </header>
 
-    <input type="text" id="taskInput" placeholder="Enter your task" />
-    <p id="errorMessage"></p>
-    <button onclick="runAutomation()">Run</button>
-    <button onclick="clearTasks()">Clear All Tasks</button>
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon"><i data-lucide="database"></i></div>
+          <div class="stat-info">
+            <h3>Tasks Saved</h3>
+            <p id="taskCount">0</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i data-lucide="terminal"></i></div>
+          <div class="stat-info">
+            <h3>Last Result</h3>
+            <p id="lastResult">Waiting...</p>
+          </div>
+        </div>
+      </section>
 
-    <h3>Result</h3>
-    <p id="output"></p>
+      <section class="input-section glass">
+        <div class="input-group">
+          <input type="text" id="taskInput" placeholder="What should I automate today?" />
+          <button onclick="runAutomation()" class="btn-primary">
+            <i data-lucide="play"></i> Run
+          </button>
+        </div>
+        <p id="errorMessage" class="error-text"></p>
+        <button onclick="clearTasks()" class="btn-outline">Clear History</button>
+      </section>
 
-    <h3>Task History</h3>
-    <ul id="historyList"></ul>
+      <section class="results-grid">
+        <div class="output-box glass">
+          <label><i data-lucide="cpu"></i> AI Engine Output</label>
+          <div id="output" class="content-placeholder">System ready...</div>
+        </div>
+        
+        <div class="history-box glass">
+          <label><i data-lucide="history"></i> Task History</label>
+          <ul id="historyList"></ul>
+        </div>
+      </section>
+    </main>
   </div>
 
   <script src="script.js"></script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>
